@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RideShare - Offer a Ride</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .map-placeholder {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+        }
+        .cost-badge {
+            transition: all 0.3s ease;
+        }
+        .cost-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-car text-2xl"></i>
+                <h1 class="text-2xl font-bold">RideShare50</h1>
+            </div>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#" class="hover:underline">Home</a></li>
+                    <li><a href="#" class="hover:underline">Find Rides</a></li>
+                    <li><a href="#" class="font-semibold underline">Offer Ride</a></li>
+                    <li><a href="#" class="hover:underline">My Rides</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Progress Steps -->
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex-1">
+                        <div class="h-2 bg-blue-200 rounded-full">
+                            <div class="h-2 bg-blue-600 rounded-full" style="width: 33%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between text-sm text-gray-600">
+                    <div class="text-center">
+                        <div class="w-8 h-8 mx-auto rounded-full bg-blue-600 text-white flex items-center justify-center mb-1">1</div>
+                        <span class="font-medium">Route & Time</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-8 h-8 mx-auto rounded-full bg-blue-200 text-gray-600 flex items-center justify-center mb-1">2</div>
+                        <span>Seats & Cost</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-8 h-8 mx-auto rounded-full bg-blue-200 text-gray-600 flex items-center justify-center mb-1">3</div>
+                        <span>Preferences</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Steps -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <!-- Step 1: Route & Time -->
+                <div id="step1" class="form-step active p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-route text-blue-500 mr-3"></i> Route Details
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- From/To Locations -->
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="from" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="fas fa-map-marker-alt text-blue-500 mr-1"></i> From
+                                </label>
+                                <div class="relative">
+                                    <input type="text" id="from" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Starting point">
+                                    <button class="absolute right-3 top-3 text-gray-400 hover:text-blue-500">
+                                        <i class="fas fa-location-arrow"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="to" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="fas fa-flag-checkered text-blue-500 mr-1"></i> To
+                                </label>
+                                <div class="relative">
+                                    <input type="text" id="to" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Destination">
+                                    <button class="absolute right-3 top-3 text-gray-400 hover:text-blue-500">
+                                        <i class="fas fa-location-arrow"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Map Preview -->
+                        <div class="rounded-lg overflow-hidden border border-gray-200">
+                            <div class="map-placeholder h-48 flex items-center justify-center">
+                                <div class="text-center p-4">
+                                    <i class="fas fa-map-marked-alt text-4xl text-blue-500 mb-2"></i>
+                                    <p class="text-gray-600">Route map will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Date & Time -->
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="date" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="far fa-calendar-alt text-blue-500 mr-1"></i> Date
+                                </label>
+                                <input type="date" id="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="time" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="far fa-clock text-blue-500 mr-1"></i> Time
+                                </label>
+                                <input type="time" id="time" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-end">
+                        <button onclick="nextStep(2)" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 flex items-center">
+                            Next <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Seats & Cost -->
+                <div id="step2" class="form-step p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-users text-blue-500 mr-3"></i> Seats & Cost Sharing
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Available Seats -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                                <i class="fas fa-chair text-blue-500 mr-1"></i> Available Seats
+                            </label>
+                            <div class="flex space-x-2">
+                                <button class="seat-btn bg-blue-100 text-blue-600 border border-blue-200 px-4 py-2 rounded-lg">1</button>
+                                <button class="seat-btn bg-blue-100 text-blue-600 border border-blue-200 px-4 py-2 rounded-lg">2</button>
+                                <button class="seat-btn bg-blue-600 text-white border border-blue-600 px-4 py-2 rounded-lg">3</button>
+                                <button class="seat-btn bg-blue-100 text-blue-600 border border-blue-200 px-4 py-2 rounded-lg">4</button>
+                                <button class="seat-btn bg-blue-100 text-blue-600 border border-blue-200 px-4 py-2 rounded-lg">5</button>
+                            </div>
+                            <p class="mt-2 text-sm text-gray-500">Only offer seats you're sure are available</p>
+                        </div>
+                        
+                        <!-- Fuel Cost -->
+                        <div>
+                            <label for="fuelCost" class="block text-sm font-medium text-gray-700 mb-1">
+                                <i class="fas fa-gas-pump text-blue-500 mr-1"></i> Estimated Total Fuel Cost
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500">₹</span>
+                                </div>
+                                <input type="number" id="fuelCost" class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="500">
+                            </div>
+                            <p class="mt-2 text-sm text-gray-500">We'll automatically split this cost with passengers</p>
+                        </div>
+                        
+                        <!-- Cost Breakdown -->
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h3 class="font-medium text-blue-800 mb-3">Cost Sharing Breakdown</h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="cost-badge bg-white p-3 rounded-lg border border-blue-100">
+                                    <p class="text-sm text-gray-600">Total fuel cost</p>
+                                    <p class="font-bold text-blue-600">₹500</p>
+                                </div>
+                                <div class="cost-badge bg-white p-3 rounded-lg border border-blue-100">
+                                    <p class="text-sm text-gray-600">Per passenger</p>
+                                    <p class="font-bold text-blue-600">₹167</p>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-sm text-blue-700">Each passenger will pay 1/3 of the total fuel cost</p>
+                        </div>
+                        
+                        <!-- Pickup Point -->
+                        <div>
+                            <label for="pickupPoint" class="block text-sm font-medium text-gray-700 mb-1">
+                                <i class="fas fa-map-pin text-blue-500 mr-1"></i> Pickup Point (Optional)
+                            </label>
+                            <input type="text" id="pickupPoint" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Near Ameerpet Metro Station">
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-between">
+                        <button onclick="prevStep(1)" class="text-gray-600 hover:text-gray-800 font-medium py-3 px-6 rounded-lg transition duration-300 flex items-center">
+                            <i class="fas fa-arrow-left mr-2"></i> Back
+                        </button>
+                        <button onclick="nextStep(3)" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 flex items-center">
+                            Next <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Preferences -->
+                <div id="step3" class="form-step p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-cog text-blue-500 mr-3"></i> Ride Preferences
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Contact Method -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">
+                                <i class="fas fa-phone-alt text-blue-500 mr-1"></i> Contact Method
+                            </label>
+                            <div class="space-y-3">
+                                <label class="flex items-center space-x-3">
+                                    <input type="radio" name="contact" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                    <span class="text-gray-700">In-app messaging</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="radio" name="contact" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                    <span class="text-gray-700">WhatsApp</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="radio" name="contact" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                    <span class="text-gray-700">Phone call</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Ride Preferences -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">
+                                <i class="fas fa-check-circle text-blue-500 mr-1"></i> Ride Preferences
+                            </label>
+                            <div class="space-y-3">
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" class="h-4 w-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-gray-700">AC available</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" class="h-4 w-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-gray-700">No smoking</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" class="h-4 w-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-gray-700">Pets allowed</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" class="h-4 w-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-gray-700">Luggage space available</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Additional Notes -->
+                        <div>
+                            <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">
+                                <i class="fas fa-sticky-note text-blue-500 mr-1"></i> Additional Notes
+                            </label>
+                            <textarea id="notes" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Any special instructions or details about your ride"></textarea>
+                        </div>
+                        
+                        <!-- Preview Card -->
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                            <h3 class="font-medium text-blue-800 mb-3 flex items-center">
+                                <i class="fas fa-eye mr-2"></i> Ride Preview
+                            </h3>
+                            <div class="bg-white p-4 rounded-lg">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h4 class="font-bold text-gray-800">Hyderabad → Siddipet</h4>
+                                        <p class="text-sm text-gray-600">Tomorrow at 8:30 AM</p>
+                                    </div>
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">3 seats</span>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                    <span><i class="fas fa-gas-pump mr-1"></i> ₹167 per seat</span>
+                                    <span><i class="fas fa-clock mr-1"></i> ~1h 30m</span>
+                                </div>
+                                <p class="text-sm text-gray-600"><i class="fas fa-map-marker-alt mr-1"></i> Pickup: Near Ameerpet Metro Station</p>
+                                <p class="text-sm text-gray-600 mt-2"><i class="fas fa-info-circle mr-1"></i> AC available, No smoking</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-between">
+                        <button onclick="prevStep(2)" class="text-gray-600 hover:text-gray-800 font-medium py-3 px-6 rounded-lg transition duration-300 flex items-center">
+                            <i class="fas fa-arrow-left mr-2"></i> Back
+                        </button>
+                        <button class="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition duration-300 flex items-center">
+                            Post My Ride <i class="fas fa-car ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Form step navigation
+        function nextStep(step) {
+            document.querySelector('.form-step.active').classList.remove('active');
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // Update progress bar
+            const progress = document.querySelector('.h-2.bg-blue-600');
+            if (step === 2) progress.style.width = '66%';
+            if (step === 3) progress.style.width = '100%';
+            
+            // Update step indicators
+            const steps = document.querySelectorAll('.flex.justify-between.text-sm.text-gray-600 > div');
+            steps.forEach((el, index) => {
+                if (index < step) {
+                    el.querySelector('div').classList.remove('bg-blue-200', 'text-gray-600');
+                    el.querySelector('div').classList.add('bg-blue-600', 'text-white');
+                    el.querySelector('span').classList.add('font-medium');
+                } else {
+                    el.querySelector('div').classList.remove('bg-blue-600', 'text-white');
+                    el.querySelector('div').classList.add('bg-blue-200', 'text-gray-600');
+                    el.querySelector('span').classList.remove('font-medium');
+                }
+            });
+        }
+        
+        function prevStep(step) {
+            document.querySelector('.form-step.active').classList.remove('active');
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // Update progress bar
+            const progress = document.querySelector('.h-2.bg-blue-600');
+            if (step === 1) progress.style.width = '33%';
+            if (step === 2) progress.style.width = '66%';
+            
+            // Update step indicators
+            const steps = document.querySelectorAll('.flex.justify-between.text-sm.text-gray-600 > div');
+            steps.forEach((el, index) => {
+                if (index < step) {
+                    el.querySelector('div').classList.remove('bg-blue-200', 'text-gray-600');
+                    el.querySelector('div').classList.add('bg-blue-600', 'text-white');
+                    el.querySelector('span').classList.add('font-medium');
+                } else {
+                    el.querySelector('div').classList.remove('bg-blue-600', 'text-white');
+                    el.querySelector('div').classList.add('bg-blue-200', 'text-gray-600');
+                    el.querySelector('span').classList.remove('font-medium');
+                }
+            });
+        }
+        
+        // Seat selection
+        document.querySelectorAll('.seat-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.seat-btn').forEach(b => {
+                    b.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
+                    b.classList.add('bg-blue-100', 'text-blue-600', 'border-blue-200');
+                });
+                this.classList.remove('bg-blue-100', 'text-blue-600', 'border-blue-200');
+                this.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
+                
+                // Update cost breakdown
+                const seats = parseInt(this.textContent);
+                const totalCost = document.getElementById('fuelCost').value || 500;
+                const perSeat = Math.round(totalCost / seats);
+                
+                document.querySelector('.cost-badge:nth-child(1) p:nth-child(2)').textContent = `₹${totalCost}`;
+                document.querySelector('.cost-badge:nth-child(2) p:nth-child(2)').textContent = `₹${perSeat}`;
+                document.querySelector('.bg-blue-50 p.text-blue-700').textContent = 
+                    `Each passenger will pay 1/${seats} of the total fuel cost`;
+            });
+        });
+        
+        // Fuel cost calculation
+        document.getElementById('fuelCost').addEventListener('input', function() {
+            const seats = parseInt(document.querySelector('.seat-btn.bg-blue-600')?.textContent || 3);
+            const totalCost = this.value || 500;
+            const perSeat = Math.round(totalCost / seats);
+            
+            document.querySelector('.cost-badge:nth-child(1) p:nth-child(2)').textContent = `₹${totalCost}`;
+            document.querySelector('.cost-badge:nth-child(2) p:nth-child(2)').textContent = `₹${perSeat}`;
+        });
+        
+        // Set default date to tomorrow
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const formattedDate = tomorrow.toISOString().split('T')[0];
+        document.getElementById('date').value = formattedDate;
+    </script>
+</body>
+</html>

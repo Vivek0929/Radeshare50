@@ -1,0 +1,98 @@
+    <!-- Waiting Confirmation Page -->
+    <div class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-8 text-center">
+            <div class="mb-6">
+                <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-clock text-blue-500 text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Waiting for Confirmation</h3>
+                <p class="text-gray-600">Your ride request has been sent to Rajesh K. Please wait while they confirm your booking.</p>
+            </div>
+            
+            <div class="animate-pulse mb-6">
+                <div class="h-4 bg-blue-100 rounded-full w-3/4 mx-auto mb-2"></div>
+                <div class="h-4 bg-blue-100 rounded-full w-1/2 mx-auto"></div>
+            </div>
+            
+            <div class="space-y-3">
+                <div class="flex items-center justify-center space-x-2">
+                    <i class="fas fa-phone-alt text-blue-500"></i>
+                    <span class="text-gray-700">+91 98765 43210</span>
+                </div>
+                <p class="text-sm text-gray-500">You can contact the driver directly</p>
+            </div>
+            
+            <div class="flex justify-center space-x-4 mt-6">
+                <a href="find-rides.html" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-6 rounded-lg transition duration-300">
+                    Cancel Request
+                </a>
+                <a href="chat.html" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
+                    <i class="far fa-comment-dots mr-2"></i> Message
+                </a>
+            </div>
+        </div>
+    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RideShare - Find a Ride</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .ride-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .time-slider {
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: #d1d5db;
+        }
+        .time-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+        }
+        .empty-state {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <script>
+        // Function to open ride details modal
+        function openModal() {
+            document.getElementById('rideModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Function to close ride details modal
+        function closeModal() {
+            document.getElementById('rideModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Add click event to all "Book Seat" buttons to open modal
+        document.querySelectorAll('.ride-card button:nth-child(2)').forEach(button => {
+            button.addEventListener('click', openModal);
+        });
+
+        
+        // Toggle empty state (for demo purposes)
+        function toggleEmptyState() {
+            document.querySelector('.empty-state').classList.toggle('hidden');
+            document.querySelector('.grid.md\\:grid-cols-2').classList.toggle('hidden');
+        }
+        
+        // Uncomment to test empty state
+        // setTimeout(toggleEmptyState, 1500);
+    </script>
+</body>
+</html>
